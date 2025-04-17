@@ -1,0 +1,34 @@
+{
+  "grammars": [
+    {
+      "name": "greycat",
+      "camelcase": "GreyCat",
+      "path": ".",
+      "scope": "source.greycat",
+      "file-types": [
+        "gcl"
+      ],
+      "highlights": "queries/highlights.scm",
+      "injection-regex": "greycat"
+    }
+  ],
+  "metadata": {
+    "version": "7.0.0",
+    "license": "MIT",
+    "description": "GreyCat Language Parser",
+    "authors": [
+      {
+        "name": "Maxime Tricoire",
+        "email": "maxime.tricoire@datathings.com"
+      }
+    ],
+    "links": {
+      "repository": "https://greycat.io/"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "node": true,
+    "rust": true
+  }
+}
