@@ -47,5 +47,17 @@
     "prestart": "tree-sitter build --wasm",
     "start": "tree-sitter playground",
     "test": "node --test bindings/node/*_test.js"
-  }
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "tree-sitter",
+      "tree-sitter-cli"
+    ]
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.greycat",
+      "injection-regex": "^greycat$"
+    }
+  ]
 }
