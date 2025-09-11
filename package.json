@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-greycat",
-  "version": "7.0.0",
+  "version": "0.1.0",
   "description": "GreyCat Language Parser",
   "repository": "https://greycat.io/",
   "license": "MIT",

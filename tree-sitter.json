@@ -5,15 +5,13 @@
       "camelcase": "GreyCat",
       "path": ".",
       "scope": "source.greycat",
-      "file-types": [
-        "gcl"
-      ],
+      "file-types": ["gcl"],
       "highlights": "queries/highlights.scm",
       "injection-regex": "greycat"
     }
   ],
   "metadata": {
-    "version": "7.0.0",
+    "version": "0.1.0",
     "license": "MIT",
     "description": "GreyCat Language Parser",
     "authors": [

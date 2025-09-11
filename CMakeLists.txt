@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(tree-sitter-greycat
-        VERSION "7.0.0"
+        VERSION "0.1.0"
         DESCRIPTION "GreyCat Language Parser"
         HOMEPAGE_URL "https://greycat.io/"
         LANGUAGES C)
@@ -26,7 +26,7 @@ add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c"
 
 add_library(tree-sitter-greycat src/parser.c)
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/scanner.c)
-  target_sources(tree-sitter-greycat PRIVATE src/scanner.c)
+    target_sources(tree-sitter-greycat PRIVATE src/scanner.c)
 endif()
 target_include_directories(tree-sitter-greycat PRIVATE src)
 

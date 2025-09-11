@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-greycat
 HOMEPAGE_URL := https://greycat.io/
-VERSION := 7.0.0
+VERSION := 0.1.0
 
 # repository
 SRC_DIR := src

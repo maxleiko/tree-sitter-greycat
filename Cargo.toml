@@ -1,7 +1,7 @@
 [package]
 name = "tree-sitter-greycat"
 description = "GreyCat Language Parser"
-version = "7.0.0"
+version = "0.1.0"
 authors = ["Maxime Tricoire <maxime.tricoire@datathings.com>"]
 license = "MIT"
 readme = "README.md"
