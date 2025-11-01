@@ -20,26 +20,21 @@ module.exports = grammar({
   conflicts: ($) => [[$.type_ident], [$._expr, $.type_ident]],
 
   rules: {
-    module: ($) => repeat(choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma)),
+    module: ($) =>
+      repeat(
+        choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma)
+      ),
 
     mod_pragma: ($) => seq($.annotation, $._semi),
 
-    type_modifiers: ($) =>
-      choice(
-        seq("private", "native"),
-        seq("native", "private"),
-        seq("private", "abstract"),
-        seq("abstract", "private"),
-        "private",
-        "abstract",
-        "native"
-      ),
+    modifiers: () =>
+      repeat1(choice("private", "static", "abstract", "native")),
 
     type_decl: ($) =>
       seq(
         optional($.doc),
         optional($.annotations),
-        field("modifiers", optional($.type_modifiers)),
+        field("modifiers", optional($.modifiers)),
         "type",
         field("name", $.ident),
         field("params", optional($.type_params)),
@@ -50,19 +45,11 @@ module.exports = grammar({
     type_params: ($) => seq("<", sepBy1(",", $.ident), ">"),
     type_body: ($) => seq("{", repeat(choice($.type_attr, $.type_method)), "}"),
 
-    attr_modifiers: ($) =>
-      choice(
-        seq("private", "static"),
-        seq("static", "private"),
-        "private",
-        "static"
-      ),
-
     type_attr: ($) =>
       seq(
         optional($.doc),
         optional($.annotations),
-        field("modifiers", optional($.attr_modifiers)),
+        field("modifiers", optional($.modifiers)),
         field("name", $.ident),
         field("type", optional($.attr_type)),
         field("init", optional($.attr_init)),
@@ -71,35 +58,11 @@ module.exports = grammar({
     attr_type: ($) => seq(":", $.type_ident),
     attr_init: ($) => seq("=", $._expr),
 
-    method_modifiers: ($) =>
-      choice(
-        // Single modifiers
-        "abstract",
-        "static",
-        "native",
-
-        // Two modifiers in any order
-        seq("abstract", "static"),
-        seq("static", "abstract"),
-        seq("abstract", "native"),
-        seq("native", "abstract"),
-        seq("static", "native"),
-        seq("native", "static"),
-
-        // All three modifiers in any order
-        seq("abstract", "static", "native"),
-        seq("abstract", "native", "static"),
-        seq("static", "abstract", "native"),
-        seq("static", "native", "abstract"),
-        seq("native", "abstract", "static"),
-        seq("native", "static", "abstract")
-      ),
-
     type_method: ($) =>
       seq(
         optional($.doc),
         optional($.annotations),
-        field("modifiers", optional($.method_modifiers)),
+        field("modifiers", optional($.modifiers)),
         "fn",
         field("name", $.ident),
         field("generics", optional($.type_params)),
@@ -112,7 +75,7 @@ module.exports = grammar({
       seq(
         optional($.doc),
         optional($.annotations),
-        field("modifiers", optional("private")),
+        field("modifiers", optional($.modifiers)),
         "enum",
         field("name", $.ident),
         field("body", $.enum_body)
@@ -121,19 +84,11 @@ module.exports = grammar({
     enum_body: ($) => seq("{", sepBy($._semi, $.enum_field), "}"),
     enum_field: ($) => seq($.ident, optional(seq("(", $._expr, ")"))),
 
-    fn_modifiers: ($) =>
-      choice(
-        seq("private", "native"),
-        seq("native", "private"),
-        "private",
-        "native"
-      ),
-
     fn_decl: ($) =>
       seq(
         optional($.doc),
         optional($.annotations),
-        field("modifiers", optional($.fn_modifiers)),
+        field("modifiers", optional($.modifiers)),
         "fn",
         field("name", $.ident),
         field("generics", optional($.type_params)),
@@ -143,7 +98,13 @@ module.exports = grammar({
       ),
 
     modvar: ($) =>
-      seq("var", field("name", $.ident), ":", field("type", $.type_ident), $._semi),
+      seq(
+        "var",
+        field("name", $.ident),
+        ":",
+        field("type", $.type_ident),
+        $._semi
+      ),
 
     type_decorator: ($) => seq(":", field("type", $.type_ident)),
 
@@ -528,7 +489,7 @@ module.exports = grammar({
         "'"
       ),
 
-    iso8601: ($) =>
+    iso8601: () =>
       /[0-9]{4}(-[0-9]{2}(-[0-9]{2}(T[0-9]{2}(:[0-9]{2}(:[0-9]{2}(\.[0-9]+)?)?)?(Z|[+-][0-9]{2}(:[0-9]{2})?)?)?)?)?/,
 
     number: ($) =>
@@ -540,7 +501,7 @@ module.exports = grammar({
           optional($.number_suffix)
         )
       ),
-    _number_decimal: ($) => seq(".", /[0-9][0-9_]*/),
+    _number_decimal: () => seq(".", /[0-9][0-9_]*/),
     _number_scientific: ($) =>
       prec.right(
         seq(

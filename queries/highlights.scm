@@ -6,16 +6,13 @@
   "break" "continue" "if" "else" "for" "in" "while"
   "do" "try" "catch" "at" "as" "is" "sampling" "limit"
   "skip" "typeof" "abstract" "native" "private" "static"
-  "true" "false" "null" "this"
 ] @keyword
 
 ;────────────────────────────
 ; Comments and documentation
 ;────────────────────────────
 (line_comment) @comment
-(block_comment) @comment
-(doc_comment) @comment.documentation
-(doc) @comment.documentation
+(doc) @comment
 
 ;────────────────────────────
 ; Identifiers and types
@@ -28,12 +25,20 @@
 (type_attr name: (ident) @field)
 
 ;────────────────────────────
-; Function & methods
+; Functions & Methods
 ;────────────────────────────
-(fn_decl name: (ident) @function)
-(type_method name: (ident) @function.method)
-(lambda_expr) @function
+(fn_decl
+  name: (ident) @function)
+(fn_decl
+  modifiers: (_)
+  name: (ident) @function)
+(type_method
+  name: (ident) @function.method)
+(type_method
+  modifiers: (_)
+  name: (ident) @function.method)
 (fn_param name: (ident) @parameter)
+(lambda_expr) @function
 
 ;────────────────────────────
 ; Literals
@@ -47,25 +52,20 @@
 (string_substitution) @punctuation.special
 
 ;────────────────────────────
-; Operators and punctuation
+; Operators
 ;────────────────────────────
 [
   "+" "-" "*" "/" "%" "^"
   "=" "==" "!=" "<" "<=" ">" ">=" "&&" "||" "!"
-  "->" "::" "." "," ";" ":" "?" "??"
+  "->" "::" "." "," ";" ":" "??"
 ] @operator
 
+;────────────────────────────
+; Punctuation
+;────────────────────────────
 ["(" ")" "[" "]" "{" "}"] @punctuation.bracket
 ["<" ">"] @punctuation.bracket
-["@" "#"] @punctuation.special
-
-;────────────────────────────
-; Declarations and modifiers
-;────────────────────────────
-(type_modifiers) @keyword.modifier
-(attr_modifiers) @keyword.modifier
-(method_modifiers) @keyword.modifier
-(fn_modifiers) @keyword.modifier
+["@"] @punctuation.special
 
 ;────────────────────────────
 ; Control flow structures
@@ -99,6 +99,8 @@
 ;────────────────────────────
 ; Misc
 ;────────────────────────────
+(modifiers) @keyword.modifier
 (annotation "@" @punctuation.special)
-(annotation ident: (ident) @attribute)
+(annotation (ident) @attribute)
+(annotation (args) @parameter)
 (optional) @punctuation.special

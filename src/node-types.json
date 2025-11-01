@@ -535,11 +535,6 @@
     }
   },
   {
-    "type": "attr_modifiers",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "attr_type",
     "named": true,
     "fields": {},
@@ -1059,8 +1054,8 @@
         "required": false,
         "types": [
           {
-            "type": "private",
-            "named": false
+            "type": "modifiers",
+            "named": true
           }
         ]
       },
@@ -1318,7 +1313,7 @@
         "required": false,
         "types": [
           {
-            "type": "fn_modifiers",
+            "type": "modifiers",
             "named": true
           }
         ]
@@ -1372,11 +1367,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "fn_modifiers",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "fn_param",
@@ -2721,11 +2711,6 @@
     }
   },
   {
-    "type": "method_modifiers",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "mod_pragma",
     "named": true,
     "fields": {},
@@ -2745,8 +2730,14 @@
     }
   },
   {
+    "type": "modifiers",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "module",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -3942,7 +3933,7 @@
         "required": false,
         "types": [
           {
-            "type": "attr_modifiers",
+            "type": "modifiers",
             "named": true
           }
         ]
@@ -4025,7 +4016,7 @@
         "required": false,
         "types": [
           {
-            "type": "type_modifiers",
+            "type": "modifiers",
             "named": true
           }
         ]
@@ -4161,7 +4152,7 @@
         "required": false,
         "types": [
           {
-            "type": "method_modifiers",
+            "type": "modifiers",
             "named": true
           }
         ]
@@ -4215,11 +4206,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "type_modifiers",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "type_params",
@@ -4709,7 +4695,8 @@
   },
   {
     "type": "line_comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "native",
