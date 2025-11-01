@@ -27,16 +27,8 @@
 ;────────────────────────────
 ; Functions & Methods
 ;────────────────────────────
-(fn_decl
-  name: (ident) @function)
-(fn_decl
-  modifiers: (_)
-  name: (ident) @function)
-(type_method
-  name: (ident) @function.method)
-(type_method
-  modifiers: (_)
-  name: (ident) @function.method)
+(fn_decl name: (ident) @function)
+(type_method name: (ident) @function.method)
 (fn_param name: (ident) @parameter)
 (lambda_expr) @function
 
