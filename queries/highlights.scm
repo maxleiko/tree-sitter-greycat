@@ -12,7 +12,7 @@
 ; Comments and documentation
 ;────────────────────────────
 (line_comment) @comment
-(doc) @comment
+(doc_comment) @comment.documentation
 
 ;────────────────────────────
 ; Identifiers and types
@@ -33,6 +33,26 @@
 (lambda_expr) @function
 
 ;────────────────────────────
+; Fields and properties
+;────────────────────────────
+(member_expr
+  property: (ident) @variable.member)
+(static_expr
+  property: (ident) @variable.member.static)
+
+;────────────────────────────
+; Function Calls
+;────────────────────────────
+(call_expr
+  fn: (ident) @function.call)
+(call_expr
+  fn: (member_expr
+        property: (ident) @function.method.call))
+(call_expr
+  fn: (static_expr
+        property: (ident) @function.static.call))
+
+;────────────────────────────
 ; Literals
 ;────────────────────────────
 (number) @number
@@ -42,6 +62,7 @@
 (string_fragment) @string
 (string_escape_sequence) @string.escape
 (string_substitution) @punctuation.special
+(this) @variable.builtin
 
 ;────────────────────────────
 ; Operators
