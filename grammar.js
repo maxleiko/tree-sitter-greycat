@@ -435,6 +435,8 @@ module.exports = grammar({
 
     type_ident: ($) =>
       seq(
+        optional("typeof"),
+        repeat(seq($.ident, "::")),
         field("name", $.ident),
         optional(seq("<", sepBy1(",", field("params", $.type_ident)), ">")),
         optional($.optional)
