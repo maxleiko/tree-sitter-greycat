@@ -2770,6 +2770,16 @@
     "type": "modvar",
     "named": true,
     "fields": {
+      "modifiers": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "modifiers",
+            "named": true
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
