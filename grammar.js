@@ -77,7 +77,7 @@ module.exports = grammar({
         field("body", $.enum_body),
       ),
 
-    enum_body: ($) => seq("{", sepBy($._semi, $.enum_field), "}"),
+    enum_body: ($) => seq("{", sepBy(choice($._semi, ','), $.enum_field), "}"),
     enum_field: ($) => seq($.ident, optional(seq("(", $._expr, ")"))),
 
     fn_decl: ($) =>
