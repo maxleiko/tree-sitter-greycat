@@ -46,7 +46,7 @@ module.exports = grammar({
         optional($.doc),
         optional($.annotations),
         field("modifiers", optional($.modifiers)),
-        field("name", $.ident),
+        field("name", choice($.ident, $.string)),
         field("type", optional($.attr_type)),
         field("init", optional($.attr_init)),
         $._semi,
@@ -77,8 +77,8 @@ module.exports = grammar({
         field("body", $.enum_body),
       ),
 
-    enum_body: ($) => seq("{", sepBy(choice($._semi, ','), $.enum_field), "}"),
-    enum_field: ($) => seq($.ident, optional(seq("(", $._expr, ")"))),
+    enum_body: ($) => seq("{", sepBy(choice($._semi, ","), $.enum_field), "}"),
+    enum_field: ($) => seq(choice($.ident, $.string), optional(seq("(", $._expr, ")"))),
 
     fn_decl: ($) =>
       seq(
