@@ -22,7 +22,7 @@ module.exports = grammar({
   rules: {
     module: ($) => repeat(choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma)),
 
-    mod_pragma: ($) => seq($.annotation, $._semi),
+    mod_pragma: ($) => seq(optional($.doc), $.annotation, $._semi),
 
     modifiers: () => repeat1(choice("private", "static", "abstract", "native")),
 
@@ -95,6 +95,8 @@ module.exports = grammar({
 
     modvar: ($) =>
       seq(
+        optional($.doc),
+        optional($.annotations),
         field("modifiers", optional($.modifiers)),
         "var",
         field("name", $.ident),
@@ -300,7 +302,7 @@ module.exports = grammar({
         seq(
           choice(prec.right($.static_expr), prec.right($.type_ident)),
           "::",
-          field("property", $.ident),
+          field("property", choice($.ident, $.string)),
         ),
       ),
 

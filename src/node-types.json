@@ -2723,6 +2723,10 @@
           "named": true
         },
         {
+          "type": "doc",
+          "named": true
+        },
+        {
           "type": "extra_semi",
           "named": true
         }
@@ -2805,6 +2809,14 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "annotations",
+          "named": true
+        },
+        {
+          "type": "doc",
+          "named": true
+        },
         {
           "type": "extra_semi",
           "named": true
@@ -3457,6 +3469,10 @@
         "types": [
           {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "string",
             "named": true
           }
         ]
