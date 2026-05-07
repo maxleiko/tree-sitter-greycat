@@ -49,7 +49,10 @@ module.exports = grammar({
         field("name", choice($.ident, $.string)),
         field("type", optional($.attr_type)),
         field("init", optional($.attr_init)),
-        $._semi,
+        // Trailing semicolon is optional so a final attr without `;`
+        // before the closing `}` parses cleanly. Drains the last
+        // entry from `KNOWN_GRAMMAR_GAPS` (P7.1).
+        optional($._semi),
       ),
     attr_type: ($) => seq(":", $.type_ident),
     attr_init: ($) => seq("=", $._expr),
