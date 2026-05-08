@@ -11,7 +11,7 @@ module.exports = grammar({
   name: "greycat",
 
   // see src/scanner.c for those
-  externals: ($) => [$._string_fragment],
+  externals: ($) => [$._string_fragment, $.number_suffix],
 
   word: ($) => $.ident,
 
@@ -255,7 +255,6 @@ module.exports = grammar({
         prec.right($.arrow_expr),
         prec.right($.static_expr),
         $.string,
-        $.duration,
         $.number,
         $.char,
         $.true,
@@ -406,27 +405,67 @@ module.exports = grammar({
     iso8601: () =>
       /[0-9]{4}(-[0-9]{2}(-[0-9]{2}(T[0-9]{2}(:[0-9]{2}(:[0-9]{2}(\.[0-9]+)?)?)?(Z|[+-][0-9]{2}(:[0-9]{2})?)?)?)?)?/,
 
+    // Each notation form is a single `token(...)` so the lexer's
+    // longest-match resolves ambiguity at the boundary between the literal
+    // and whatever follows. The previous shape kept `number_suffix` as a
+    // separate token, which lost its tie-break against `ident` in
+    // `attr_init` position: `static x: time = 42_time;` lexed `42_` then
+    // `time` as the start of a ghost `type_attr`, dropping the suffix.
+    // With every form a single token, the lexer commits to the longest
+    // candidate (`number_suffixed` for `42_time`) and the next thing it
+    // sees is `;`, no ambiguity. HIR lowering reads `number`'s child kind
+    // to distinguish a suffixed literal from a plain one and extracts the
+    // suffix (when present) by regex on the literal text.
     number: ($) =>
-      prec.right(
+      choice(
+        $.number_int,
+        $.number_decimal,
+        $.number_scientific,
+        $.number_suffixed,
+      ),
+    number_int: () => /[0-9][0-9_]*/,
+    number_decimal: () => token(seq(/[0-9][0-9_]*/, ".", /[0-9][0-9_]*/)),
+    number_scientific: () =>
+      token(
         seq(
           /[0-9][0-9_]*/,
-          optional($._number_decimal),
-          optional($._number_scientific),
-          optional($.number_suffix),
-        ),
-      ),
-    _number_decimal: () => seq(".", /[0-9][0-9_]*/),
-    _number_scientific: ($) =>
-      prec.right(
-        seq(
-          choice("e", "E"),
-          optional(choice("-", "+")),
+          optional(seq(".", /[0-9][0-9_]*/)),
+          /[eE]/,
+          optional(/[+-]/),
           /[0-9][0-9_]*/,
-          optional($._number_decimal),
+          optional(seq(".", /[0-9][0-9_]*/)),
         ),
       ),
-    number_suffix: (_) => /[a-z_A-Z]+/,
-    duration: (_) => token(repeat1(/(([0-9][_0-9]*(\.[0-9][_0-9]*)?)(us|ms|s|min|hour|day))[_]*/)),
+    // `number_suffixed` keeps value-parts and letter-suffixes as
+    // separate visible tokens so highlights / theming can color them
+    // distinctly. Compound duration-like forms repeat the
+    // `(value suffix)` group so each `value` and each `suffix` is its
+    // own visible token in the CST: `2hour_42ms` →
+    // `(number_int "2") (number_suffix "hour_") (number_int "42") (number_suffix "ms")`.
+    // The grammar does NOT enforce which letter sequences are real
+    // units or known typed-suffix names — bogus `42xyz` parses fine
+    // and the analyzer emits a semantic diagnostic. Subsumes the old
+    // `duration` rule.
+    number_suffixed: ($) =>
+      seq(
+        choice($.number_int, $.number_decimal, $.number_scientific),
+        $.number_suffix,
+        repeat(
+          seq(
+            choice($.number_int, $.number_decimal, $.number_scientific),
+            $.number_suffix,
+          ),
+        ),
+      ),
+    // `number_suffix` is scanned by the external C scanner (see
+    // `src/scanner.c`). It only fires when the parser is inside
+    // `number_suffixed` expecting a suffix — that's the only way to
+    // beat the maximal-munch rule that otherwise gives `ident` the win
+    // on compound durations like `2hour_42ms` (where `ident` would
+    // greedily match `hour_42ms` 9-chars and a letters-only
+    // `token.immediate` regex would only match `hour_` 5-chars). The
+    // scanner also enforces the immediate (no-whitespace) constraint
+    // by rejecting if the previous char wasn't a digit / letter.
 
     true: (_) => "true",
     false: (_) => "false",

@@ -56,7 +56,7 @@
 ; Literals
 ;────────────────────────────
 (number) @number
-(duration) @number
+(number_suffix) @namespace
 (char) @character
 (string) @string
 (string_fragment) @string
