@@ -17,7 +17,16 @@ module.exports = grammar({
 
   extras: ($) => [/\s/, $.line_comment, $._block_comment],
 
-  conflicts: ($) => [[$.type_ident], [$._expr, $.type_ident]],
+  conflicts: ($) => [
+    [$.type_ident],
+    [$._expr, $.type_ident],
+    // P19.12 — `]..]` (interval with closing `]`) followed by
+    // `..` — the closing `]` could either close the interval or
+    // start another one. Real source never chains intervals
+    // (`]a..]..]b..]` is meaningless) so let GLR eagerly close
+    // the first interval at `]`.
+    [$.interval_expr],
+  ],
 
   rules: {
     module: ($) => repeat(choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma)),
@@ -214,8 +223,14 @@ module.exports = grammar({
         sepBy2(",", $.for_in_param),
         "in",
         field("iterator", $._expr),
-        field("range", optional($.iterator_range)),
         optional($.optional),
+        // P19.12 — math-style range clause AFTER the iterator,
+        // used for half-open / open intervals where the bracket
+        // shape encodes inclusivity (`]a..]`, `]a..b[`, ...).
+        // Bracketless ranges (`arr[from..to]` / `arr[from..]`)
+        // already parse as `offset_expr` containing a
+        // `range_expr`, so they don't go through this field.
+        field("range", optional($.interval_expr)),
         field("sampling", optional(seq("sampling", $._expr))),
         field("limit", optional(seq("limit", $._expr))),
         field("skip", optional(seq("skip", $._expr))),
@@ -226,15 +241,6 @@ module.exports = grammar({
     for_in_param: ($) =>
       seq(field("name", $.ident), optional(seq(":", field("type", $.type_ident)))),
 
-    iterator_range: ($) =>
-      seq(
-        choice("]", "["),
-        field("from", optional($._expr)),
-        "..",
-        field("to", optional($._expr)),
-        choice("]", "["),
-      ),
-
     annotations: ($) => repeat1($.annotation),
 
     annotation: ($) => seq("@", $.ident, optional($.args)),
@@ -244,6 +250,8 @@ module.exports = grammar({
       choice(
         $.unary_expr,
         $.binary_expr,
+        $.range_expr,
+        $.interval_expr,
         $.tuple_expr,
         $.paren_expr,
         $.object_expr,
@@ -262,6 +270,46 @@ module.exports = grammar({
         $.null,
         $.this,
         $.ident,
+      ),
+
+    // P19.12 — `from..to` range as a first-class expression. Covers
+    // the canonical `arr[from..to]` / `arr[from..]` / `arr[..to]`
+    // slice forms used by `nodeTime` / `nodeList` / `nodeIndex`
+    // time-window queries. `..` binds looser than every arithmetic
+    // / comparison operator (prec 1) so `arr[a + b .. c - d]`
+    // parses as `(a + b) .. (c - d)`. Open-ended ranges drop one
+    // endpoint (`arr[startDate..]` is "from startDate to end").
+    range_expr: ($) =>
+      choice(
+        prec.left(1, seq(field("from", $._expr), "..", field("to", $._expr))),
+        prec.left(1, seq(field("from", $._expr), "..")),
+        prec.left(1, seq("..", field("to", $._expr))),
+      ),
+
+    // P19.12 — math-style interval expression with explicit
+    // exclusive (`]`) brackets on the open side. Used in
+    // iterator-slot ranges where the inclusivity matters:
+    // `]from..to]` (exclusive lower, inclusive upper),
+    // `]from..to[` (exclusive lower, exclusive upper), etc.
+    // Endpoints are optional (`]from..]` is "exclusive lower, open
+    // upper"). Open bracket is restricted to `]` (the exclusive
+    // marker) — `[from..to]` already parses as
+    // `offset_expr` + `range_expr` when wrapped in a receiver, and
+    // as `array_expr` containing a `range_expr` when standalone, so
+    // there's no syntactic room for `[` here. Distinct from
+    // `range_expr` because the bracket markers are *part of* the
+    // syntax: they can't be replaced by the surrounding
+    // `offset_expr`'s `[` / `]`.
+    interval_expr: ($) =>
+      prec(
+        2,
+        seq(
+          choice("]", "["),
+          field("from", optional($._expr)),
+          "..",
+          field("to", optional($._expr)),
+          choice("]", "["),
+        ),
       ),
 
     paren_expr: ($) => seq("(", field("expr", $._expr), ")"),

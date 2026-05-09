@@ -70,6 +70,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -95,6 +99,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -161,6 +169,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -186,6 +198,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -263,6 +279,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -292,6 +312,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -368,6 +392,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -393,6 +421,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -460,6 +492,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -485,6 +521,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -566,6 +606,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -591,6 +635,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -652,6 +700,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -677,6 +729,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -904,6 +960,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -929,6 +989,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -1090,6 +1154,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -1115,6 +1183,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -1185,6 +1257,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -1210,6 +1286,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -1443,6 +1523,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -1468,6 +1552,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -1529,6 +1617,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -1558,6 +1650,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -1591,7 +1687,7 @@
         "required": false,
         "types": [
           {
-            "type": "iterator_range",
+            "type": "interval_expr",
             "named": true
           }
         ]
@@ -1629,6 +1725,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -1654,6 +1754,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -1719,6 +1823,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -1744,6 +1852,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -1839,6 +1951,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -1864,6 +1980,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -1925,6 +2045,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -1950,6 +2074,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -2035,6 +2163,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -2060,6 +2192,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -2137,6 +2273,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -2162,6 +2302,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -2257,6 +2401,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -2282,6 +2430,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -2313,7 +2465,7 @@
     }
   },
   {
-    "type": "iterator_range",
+    "type": "interval_expr",
     "named": true,
     "fields": {
       "from": {
@@ -2349,6 +2501,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -2374,6 +2530,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -2435,6 +2595,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -2460,6 +2624,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -2564,6 +2732,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -2593,6 +2765,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -2857,6 +3033,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -2882,6 +3062,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -2943,6 +3127,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -2968,6 +3156,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -3050,6 +3242,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -3075,6 +3271,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -3141,6 +3341,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -3170,6 +3374,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -3236,6 +3444,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -3261,6 +3473,204 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
+            "named": true
+          },
+          {
+            "type": "static_expr",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "this",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": true
+          },
+          {
+            "type": "tuple_expr",
+            "named": true
+          },
+          {
+            "type": "unary_expr",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "range_expr",
+    "named": true,
+    "fields": {
+      "from": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array_expr",
+            "named": true
+          },
+          {
+            "type": "arrow_expr",
+            "named": true
+          },
+          {
+            "type": "binary_expr",
+            "named": true
+          },
+          {
+            "type": "call_expr",
+            "named": true
+          },
+          {
+            "type": "char",
+            "named": true
+          },
+          {
+            "type": "false",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
+            "type": "lambda_expr",
+            "named": true
+          },
+          {
+            "type": "member_expr",
+            "named": true
+          },
+          {
+            "type": "null",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "object_expr",
+            "named": true
+          },
+          {
+            "type": "offset_expr",
+            "named": true
+          },
+          {
+            "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
+            "named": true
+          },
+          {
+            "type": "static_expr",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "this",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": true
+          },
+          {
+            "type": "tuple_expr",
+            "named": true
+          },
+          {
+            "type": "unary_expr",
+            "named": true
+          }
+        ]
+      },
+      "to": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "array_expr",
+            "named": true
+          },
+          {
+            "type": "arrow_expr",
+            "named": true
+          },
+          {
+            "type": "binary_expr",
+            "named": true
+          },
+          {
+            "type": "call_expr",
+            "named": true
+          },
+          {
+            "type": "char",
+            "named": true
+          },
+          {
+            "type": "false",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
+            "type": "lambda_expr",
+            "named": true
+          },
+          {
+            "type": "member_expr",
+            "named": true
+          },
+          {
+            "type": "null",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "object_expr",
+            "named": true
+          },
+          {
+            "type": "offset_expr",
+            "named": true
+          },
+          {
+            "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -3332,6 +3742,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -3357,6 +3771,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -3480,6 +3898,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -3505,6 +3927,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -3575,6 +4001,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -3600,6 +4030,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -3710,6 +4144,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -3735,6 +4173,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -3796,6 +4238,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -3821,6 +4267,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
@@ -4204,6 +4654,10 @@
           "named": true
         },
         {
+          "type": "interval_expr",
+          "named": true
+        },
+        {
           "type": "lambda_expr",
           "named": true
         },
@@ -4229,6 +4683,10 @@
         },
         {
           "type": "paren_expr",
+          "named": true
+        },
+        {
+          "type": "range_expr",
           "named": true
         },
         {
@@ -4339,6 +4797,10 @@
             "named": true
           },
           {
+            "type": "interval_expr",
+            "named": true
+          },
+          {
             "type": "lambda_expr",
             "named": true
           },
@@ -4364,6 +4826,10 @@
           },
           {
             "type": "paren_expr",
+            "named": true
+          },
+          {
+            "type": "range_expr",
             "named": true
           },
           {
