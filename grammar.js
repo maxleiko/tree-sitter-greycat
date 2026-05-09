@@ -251,9 +251,9 @@ module.exports = grammar({
         $.call_expr,
         $.offset_expr,
         $.lambda_expr,
-        prec.right($.member_expr),
-        prec.right($.arrow_expr),
-        prec.right($.static_expr),
+        $.member_expr,
+        $.arrow_expr,
+        $.static_expr,
         $.string,
         $.number,
         $.char,
@@ -280,29 +280,42 @@ module.exports = grammar({
 
     array_expr: ($) => seq("[", sepBy(",", $._expr), "]"),
 
+    // Postfix / primary-tail expressions. These must bind TIGHTER than every
+    // binary operator (max prec 10) and tighter than unary prefix (prec 12),
+    // otherwise tree-sitter resolves shift-reduce on the trailing `.`/`[`/`(`
+    // by reducing the binary first and re-wrapping its right operand into the
+    // postfix — i.e. `o.x * o.y` mis-parses as `(o.x * o).y`. Sitting at 13
+    // (above prefix unary at 12) means `-o.b` parses as `-(o.b)`, matching
+    // every C-family language and the GreyCat reference.
     call_expr: ($) =>
-      seq(
-        field("fn", choice($.ident, $.member_expr, $.arrow_expr, $.static_expr)),
-        prec.left($.args),
+      prec.right(
+        13,
+        seq(field("fn", choice($.ident, $.member_expr, $.arrow_expr, $.static_expr)), $.args),
       ),
 
     lambda_expr: ($) => seq("fn", field("params", $.fn_params), field("body", $.block)),
 
     offset_expr: ($) =>
-      prec.right(seq($._expr, optional($.optional), "[", $._expr, "]", optional($.optional))),
+      prec.right(
+        13,
+        seq($._expr, optional($.optional), "[", $._expr, "]", optional($.optional)),
+      ),
 
     member_expr: ($) =>
       prec.right(
+        13,
         seq($._expr, optional($.optional), ".", field("property", $.ident), optional($.optional)),
       ),
     arrow_expr: ($) =>
       prec.right(
+        13,
         seq($._expr, optional($.optional), "->", field("property", $.ident), optional($.optional)),
       ),
     static_expr: ($) =>
       prec.right(
+        13,
         seq(
-          choice(prec.right($.static_expr), prec.right($.type_ident)),
+          choice($.static_expr, $.type_ident),
           "::",
           field("property", choice($.ident, $.string)),
         ),

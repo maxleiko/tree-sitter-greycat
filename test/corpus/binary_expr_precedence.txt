@@ -1,0 +1,605 @@
+==================================================
+Member access binds tighter than * + / (the original bug)
+==================================================
+
+fn foo(o: any) {
+    o.x * o.y + o.a / o.b;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params
+      param: (fn_param
+        name: (ident)
+        type: (type_ident name: (ident))))
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr
+            left: (member_expr (ident) property: (ident))
+            right: (member_expr (ident) property: (ident)))
+          right: (binary_expr
+            left: (member_expr (ident) property: (ident))
+            right: (member_expr (ident) property: (ident))))))))
+
+==================================================
+Member access binds tighter than + (simple case)
+==================================================
+
+fn foo() {
+    a.b + c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than *
+==================================================
+
+fn foo() {
+    a.b * c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than -
+==================================================
+
+fn foo() {
+    a.b - c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than /
+==================================================
+
+fn foo() {
+    a.b / c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than %
+==================================================
+
+fn foo() {
+    a.b % c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than ^
+==================================================
+
+fn foo() {
+    a.b ^ c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than == and !=
+==================================================
+
+fn foo() {
+    a.b == c.d;
+    a.b != c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than < > <= >=
+==================================================
+
+fn foo() {
+    a.b < c.d;
+    a.b > c.d;
+    a.b <= c.d;
+    a.b >= c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than && || ??
+==================================================
+
+fn foo() {
+    a.b && c.d;
+    a.b || c.d;
+    a.b ?? c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access binds tighter than = and ?=
+==================================================
+
+fn foo() {
+    a.b = c.d;
+    a.b ?= c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr (ident) property: (ident))
+          right: (member_expr (ident) property: (ident)))))))
+
+==================================================
+Member access chain is left-associative
+==================================================
+
+fn foo() {
+    a.b.c.d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (member_expr
+            (member_expr (ident) property: (ident))
+            property: (ident))
+          property: (ident))))))
+
+==================================================
+Mixed precedence: * binds tighter than +
+==================================================
+
+fn foo() {
+    a + b * c;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (ident)
+          right: (binary_expr
+            left: (ident)
+            right: (ident)))))))
+
+==================================================
+Mixed precedence: same-level operators are left-associative
+==================================================
+
+fn foo() {
+    a + b + c;
+    a - b - c;
+    a * b * c;
+    a / b / c;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (ident))
+          right: (ident)))
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (ident))
+          right: (ident)))
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (ident))
+          right: (ident)))
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (ident))
+          right: (ident))))))
+
+==================================================
+Mixed precedence: comparison binds tighter than logical
+==================================================
+
+fn foo() {
+    a < b && c > d;
+    a == b || c != d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (ident))
+          right: (binary_expr left: (ident) right: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (ident))
+          right: (binary_expr left: (ident) right: (ident)))))))
+
+==================================================
+Arrow access binds tighter than +
+==================================================
+
+fn foo() {
+    n->name + n->age;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (arrow_expr (ident) property: (ident))
+          right: (arrow_expr (ident) property: (ident)))))))
+
+==================================================
+Static access binds tighter than +
+==================================================
+
+fn foo() {
+    T::x + U::y;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (static_expr (type_ident name: (ident)) property: (ident))
+          right: (static_expr (type_ident name: (ident)) property: (ident)))))))
+
+==================================================
+Offset access binds tighter than +
+==================================================
+
+fn foo() {
+    a + b[0];
+    a[0] + b[1];
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (ident)
+          right: (offset_expr (ident) (number (number_int)))))
+      (expr_stmt
+        (binary_expr
+          left: (offset_expr (ident) (number (number_int)))
+          right: (offset_expr (ident) (number (number_int))))))))
+
+==================================================
+Call binds tighter than +
+==================================================
+
+fn foo() {
+    a + b();
+    a() + b();
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (ident)
+          right: (call_expr fn: (ident) (args))))
+      (expr_stmt
+        (binary_expr
+          left: (call_expr fn: (ident) (args))
+          right: (call_expr fn: (ident) (args)))))))
+
+==================================================
+Postfix chain: call -> offset -> member
+==================================================
+
+fn foo() {
+    a()[0].x;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (offset_expr
+            (call_expr fn: (ident) (args))
+            (number (number_int)))
+          property: (ident))))))
+
+==================================================
+Unary prefix wraps member access
+==================================================
+
+fn foo() {
+    -a.b;
+    !a.b;
+    +a.b;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (unary_expr (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (unary_expr (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (unary_expr (member_expr (ident) property: (ident)))))))
+
+==================================================
+Unary postfix wraps member access
+==================================================
+
+fn foo() {
+    a.b++;
+    a.b--;
+    a.b!!;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (unary_expr (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (unary_expr (member_expr (ident) property: (ident))))
+      (expr_stmt
+        (unary_expr (member_expr (ident) property: (ident)))))))
+
+==================================================
+as / is bind tighter than && and looser than +
+==================================================
+
+fn foo() {
+    a + b as Int;
+    a as Int && b as Int;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr
+            left: (ident)
+            right: (ident))
+          right: (type_ident name: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr
+            left: (ident)
+            right: (type_ident name: (ident)))
+          right: (binary_expr
+            left: (ident)
+            right: (type_ident name: (ident))))))))
+
+==================================================
+Member access on the right of binary - mixed depths
+==================================================
+
+fn foo() {
+    a + b.c.d;
+    a.b.c + d;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (ident)
+          right: (member_expr
+            (member_expr (ident) property: (ident))
+            property: (ident))))
+      (expr_stmt
+        (binary_expr
+          left: (member_expr
+            (member_expr (ident) property: (ident))
+            property: (ident))
+          right: (ident))))))
+
+==================================================
+Member of arrow chain: n->x.y is (n->x).y
+==================================================
+
+fn foo() {
+    n->x.y;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (arrow_expr (ident) property: (ident))
+          property: (ident))))))

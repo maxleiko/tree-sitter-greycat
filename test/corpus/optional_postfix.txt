@@ -1,0 +1,200 @@
+==================================================
+Leading ? on member access (null-safe)
+==================================================
+
+fn x() {
+    a?.b;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (ident)
+          (optional)
+          property: (ident))))))
+
+==================================================
+Leading ? on arrow access (null-safe)
+==================================================
+
+fn x() {
+    n?->name;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (arrow_expr
+          (ident)
+          (optional)
+          property: (ident))))))
+
+==================================================
+Leading ? on offset (null-safe)
+==================================================
+
+fn x() {
+    arr?[0];
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (offset_expr
+          (ident)
+          (optional)
+          (number (number_int)))))))
+
+==================================================
+Trailing ? on member access (lax — analyzer rejects)
+==================================================
+
+fn x() {
+    a.b?;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (ident)
+          property: (ident)
+          (optional))))))
+
+==================================================
+Trailing ? on arrow access (lax)
+==================================================
+
+fn x() {
+    n->name?;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (arrow_expr
+          (ident)
+          property: (ident)
+          (optional))))))
+
+==================================================
+Trailing ? on offset (lax)
+==================================================
+
+fn x() {
+    arr[0]?;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (offset_expr
+          (ident)
+          (number (number_int))
+          (optional))))))
+
+==================================================
+Mid-chain trailing then dot: a.b?.c parses with mid optional
+==================================================
+
+fn x() {
+    a.b?.c;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (member_expr
+            (ident)
+            property: (ident)
+            (optional))
+          property: (ident))))))
+
+==================================================
+Chained leading ?: a?.b?.c
+==================================================
+
+fn x() {
+    a?.b?.c;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (member_expr
+            (ident)
+            (optional)
+            property: (ident)
+            (optional))
+          property: (ident))))))
+
+==================================================
+Optional in for-in iterable
+==================================================
+
+fn x(arr: Array<int>?) {
+    for (i, v in arr?) {}
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params
+      param: (fn_param
+        name: (ident)
+        type: (type_ident
+          name: (ident)
+          params: (type_ident name: (ident))
+          (optional))))
+    body: (block
+      (for_in_stmt
+        (for_in_param name: (ident))
+        (for_in_param name: (ident))
+        iterator: (ident)
+        (optional)
+        block: (block)))))
