@@ -43,7 +43,13 @@ module.exports = grammar({
         "type",
         field("name", $.ident),
         field("params", optional($.type_params)),
-        field("supertype", optional(seq("extends", $.type_ident))),
+        // P19.14 — `field("supertype", ...)` tags the inner
+        // `type_ident` directly (not the surrounding `seq("extends",
+        // type_ident)`), so `child_by_field_name("supertype")` in
+        // the HIR lowering returns the type node, not the
+        // "extends" keyword. The HIR's `lower_type_ref` expects a
+        // `type_ident` here.
+        optional(seq("extends", field("supertype", $.type_ident))),
         field("body", $.type_body),
       ),
 

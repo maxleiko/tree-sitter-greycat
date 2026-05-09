@@ -4433,13 +4433,9 @@
         ]
       },
       "supertype": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "extends",
-            "named": false
-          },
           {
             "type": "type_ident",
             "named": true
