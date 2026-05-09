@@ -335,7 +335,7 @@ module.exports = grammar({
     array_expr: ($) => seq("[", sepBy(",", $._expr), "]"),
 
     // Postfix / primary-tail expressions. These must bind TIGHTER than every
-    // binary operator (max prec 10) and tighter than unary prefix (prec 12),
+    // binary operator (max prec 11 — `??`) and tighter than unary prefix (prec 12),
     // otherwise tree-sitter resolves shift-reduce on the trailing `.`/`[`/`(`
     // by reducing the binary first and re-wrapping its right operand into the
     // postfix — i.e. `o.x * o.y` mis-parses as `(o.x * o).y`. Sitting at 13
@@ -393,6 +393,14 @@ module.exports = grammar({
 
     binary_expr: ($) =>
       choice(
+        // `??` is the highest-precedence binary, above `^`. Matches
+        // the runtime parser (and the TS reference parser, where
+        // `opPrecedence` falls through to `default: 15` for
+        // `QuestionQuestion`). User code like
+        // `count ?? 0 > 0` and `row < tw.values?.rows() ?? 0` parses
+        // as `(count ?? 0) > 0` / `row < (tw.values?.rows() ?? 0)`,
+        // which is what the source intends.
+        prec.left(11, seq(field("left", $._expr), "??", field("right", $._expr))),
         prec.left(10, seq(field("left", $._expr), "^", field("right", $._expr))),
         prec.left(9, seq(field("left", $._expr), "/", field("right", $._expr))),
         prec.left(9, seq(field("left", $._expr), "*", field("right", $._expr))),
@@ -409,7 +417,6 @@ module.exports = grammar({
         prec.left(5, seq(field("left", $._expr), "is", field("right", $.type_ident))),
         prec.left(4, seq(field("left", $._expr), "&&", field("right", $._expr))),
         prec.left(3, seq(field("left", $._expr), "||", field("right", $._expr))),
-        prec.left(3, seq(field("left", $._expr), "??", field("right", $._expr))),
         prec.left(2, seq(field("left", $._expr), "=", field("right", $._expr))),
         prec.left(2, seq(field("left", $._expr), "?=", field("right", $._expr))),
       ),

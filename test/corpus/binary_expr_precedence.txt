@@ -603,3 +603,33 @@ fn foo() {
         (member_expr
           (arrow_expr (ident) property: (ident))
           property: (ident))))))
+
+==================================================
+?? binds tighter than > and arithmetic
+==================================================
+
+fn foo() {
+    a ?? 0 > 0;
+    a ?? 0 + 1;
+    a ?? 0 ^ 3;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (number (number_int)))
+          right: (number (number_int))))
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (number (number_int)))
+          right: (number (number_int))))
+      (expr_stmt
+        (binary_expr
+          left: (binary_expr left: (ident) right: (number (number_int)))
+          right: (number (number_int)))))))
