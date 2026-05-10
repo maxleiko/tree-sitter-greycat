@@ -37,8 +37,16 @@
 ;────────────────────────────
 (member_expr
   property: (ident) @variable.member)
+(member_expr
+  property: (string) @variable.member)
+(arrow_expr
+  property: (ident) @variable.member)
+(arrow_expr
+  property: (string) @variable.member)
 (static_expr
   property: (ident) @variable.member.static)
+(static_expr
+  property: (string) @variable.member.static)
 
 ;────────────────────────────
 ; Function Calls

@@ -1,0 +1,116 @@
+==================================================
+Member access with string-literal property
+==================================================
+
+fn x() {
+    conf."ssl.location" = "foo";
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (member_expr
+            (ident)
+            property: (string
+              (string_fragment)))
+          right: (string
+            (string_fragment)))))))
+
+==================================================
+Arrow access with string-literal property
+==================================================
+
+fn x() {
+    n_conf->"ssl.location" = "bar";
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (binary_expr
+          left: (arrow_expr
+            (ident)
+            property: (string
+              (string_fragment)))
+          right: (string
+            (string_fragment)))))))
+
+==================================================
+Read-side member access with string-literal property
+==================================================
+
+fn x() {
+    var v = conf."ssl.location";
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (member_expr
+            (ident)
+            property: (string
+              (string_fragment))))))))
+
+==================================================
+Null-safe member with string-literal property
+==================================================
+
+fn x() {
+    conf?."ssl.location";
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (expr_stmt
+        (member_expr
+          (ident)
+          (optional)
+          property: (string
+            (string_fragment)))))))
+
+==================================================
+Static access with string-literal property
+==================================================
+
+fn x() {
+    var v = Holder::"ssl.location";
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (static_expr
+            (type_ident
+              name: (ident))
+            property: (string
+              (string_fragment))))))))

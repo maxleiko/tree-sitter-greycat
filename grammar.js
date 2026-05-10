@@ -361,12 +361,24 @@ module.exports = grammar({
     member_expr: ($) =>
       prec.right(
         13,
-        seq($._expr, optional($.optional), ".", field("property", $.ident), optional($.optional)),
+        seq(
+          $._expr,
+          optional($.optional),
+          ".",
+          field("property", choice($.ident, $.string)),
+          optional($.optional),
+        ),
       ),
     arrow_expr: ($) =>
       prec.right(
         13,
-        seq($._expr, optional($.optional), "->", field("property", $.ident), optional($.optional)),
+        seq(
+          $._expr,
+          optional($.optional),
+          "->",
+          field("property", choice($.ident, $.string)),
+          optional($.optional),
+        ),
       ),
     static_expr: ($) =>
       prec.right(

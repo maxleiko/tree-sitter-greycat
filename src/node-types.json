@@ -242,6 +242,10 @@
           {
             "type": "ident",
             "named": true
+          },
+          {
+            "type": "string",
+            "named": true
           }
         ]
       }
@@ -2694,6 +2698,10 @@
         "types": [
           {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "string",
             "named": true
           }
         ]
