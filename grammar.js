@@ -178,11 +178,14 @@ module.exports = grammar({
         "try",
         field("try_block", $.block),
         "catch",
-        field("error_param", optional($._catch_param)),
+        // Parens and ident are independently optional so partial states
+        // during editing (`catch () { … }`) still parse — analyzer /
+        // formatter normalize. `field("error_param", …)` wraps only the
+        // `$.ident` so the field tag does not smear over the parens (a
+        // hidden-rule inlining hazard with tree-sitter's field semantics).
+        optional(seq("(", optional(field("error_param", $.ident)), ")")),
         field("catch_block", $.block),
       ),
-
-    _catch_param: ($) => seq("(", $.ident, ")"),
 
     at_stmt: ($) => seq("at", "(", field("expr", $._expr), ")", field("block", $.block)),
 

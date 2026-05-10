@@ -1,0 +1,57 @@
+==================================================
+catch with named param
+==================================================
+
+fn x() {
+    try {} catch (e) {}
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (try_stmt
+        try_block: (block)
+        error_param: (ident)
+        catch_block: (block)))))
+
+==================================================
+catch without parens (param omitted entirely)
+==================================================
+
+fn x() {
+    try {} catch {}
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (try_stmt
+        try_block: (block)
+        catch_block: (block)))))
+
+==================================================
+catch with empty parens (transient mid-edit shape)
+==================================================
+
+fn x() {
+    try {} catch () {}
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (try_stmt
+        try_block: (block)
+        catch_block: (block)))))

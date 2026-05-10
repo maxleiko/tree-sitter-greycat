@@ -4078,17 +4078,9 @@
         ]
       },
       "error_param": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
           {
             "type": "ident",
             "named": true
