@@ -835,6 +835,21 @@
     }
   },
   {
+    "type": "block_trailing_semi",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "extra_semi",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "break_stmt",
     "named": true,
     "fields": {},
@@ -1399,6 +1414,10 @@
       "types": [
         {
           "type": "annotations",
+          "named": true
+        },
+        {
+          "type": "block_trailing_semi",
           "named": true
         },
         {
@@ -4585,6 +4604,10 @@
       "types": [
         {
           "type": "annotations",
+          "named": true
+        },
+        {
+          "type": "block_trailing_semi",
           "named": true
         },
         {

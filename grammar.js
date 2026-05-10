@@ -82,7 +82,17 @@ module.exports = grammar({
         field("generics", optional($.type_params)),
         field("params", $.fn_params),
         optional(seq(":", field("return_type", $.type_ident))),
-        choice(field("body", $.block), $._semi),
+        choice(
+          // Permissive: a trailing `;` after a method body is invalid
+          // GreyCat (the runtime rejects it) but a common copy-paste
+          // habit from JS/TS. Accept it at the grammar layer so a stray
+          // `};` doesn't open an `(ERROR)` recovery span that swallows
+          // the rest of the type. The analyzer's `redundant-semicolon`
+          // lint flags `block_trailing_semi` nodes with a quickfix
+          // that removes the offending `;`.
+          seq(field("body", $.block), optional($.block_trailing_semi)),
+          $._semi,
+        ),
       ),
 
     enum_decl: ($) =>
@@ -108,7 +118,13 @@ module.exports = grammar({
         field("generics", optional($.type_params)),
         field("params", $.fn_params),
         optional(seq(":", field("return_type", $.type_ident))),
-        choice(field("body", $.block), $._semi),
+        choice(
+          // See `type_method` — same permissive `block_trailing_semi`
+          // shape so a stray `};` after a top-level fn body doesn't
+          // cascade. Flagged by the `redundant-semicolon` analyzer lint.
+          seq(field("body", $.block), optional($.block_trailing_semi)),
+          $._semi,
+        ),
       ),
 
     modvar: ($) =>
@@ -468,6 +484,11 @@ module.exports = grammar({
 
     _semi: ($) => seq(";", repeat($.extra_semi)),
     extra_semi: () => ";",
+    // Permissive trailing-`;` after a `block` body in `type_method` /
+    // `fn_decl`. Captured as a named node so the analyzer's
+    // `redundant-semicolon` lint can locate it via a CST walk and
+    // emit a structural error keyed to its byte range.
+    block_trailing_semi: ($) => $._semi,
 
     time: () =>
       token(

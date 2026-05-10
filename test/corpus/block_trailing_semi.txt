@@ -1,0 +1,116 @@
+==================================================
+type_method body followed by `;` parses as `block_trailing_semi`
+==================================================
+
+type T {
+    static fn m(): int {
+        return 0;
+    };
+}
+
+---
+
+(module
+  (type_decl
+    name: (ident)
+    body: (type_body
+      (type_method
+        modifiers: (modifiers)
+        name: (ident)
+        params: (fn_params)
+        return_type: (type_ident
+          name: (ident))
+        body: (block
+          (return_stmt
+            (number
+              (number_int))))
+        (block_trailing_semi)))))
+
+==================================================
+fn_decl body followed by `;` parses as `block_trailing_semi`
+==================================================
+
+fn n(): int {
+    return 1;
+};
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    return_type: (type_ident
+      name: (ident))
+    body: (block
+      (return_stmt
+        (number
+          (number_int))))
+    (block_trailing_semi)))
+
+==================================================
+type_method body without `;` still parses without `block_trailing_semi`
+==================================================
+
+type T {
+    static fn m(): int { return 0; }
+}
+
+---
+
+(module
+  (type_decl
+    name: (ident)
+    body: (type_body
+      (type_method
+        modifiers: (modifiers)
+        name: (ident)
+        params: (fn_params)
+        return_type: (type_ident
+          name: (ident))
+        body: (block
+          (return_stmt
+            (number
+              (number_int))))))))
+
+==================================================
+Native method (no body, just `;`) still parses as before
+==================================================
+
+type T {
+    fn m();
+}
+
+---
+
+(module
+  (type_decl
+    name: (ident)
+    body: (type_body
+      (type_method
+        name: (ident)
+        params: (fn_params)))))
+
+==================================================
+Multiple trailing `;` pile up into one `block_trailing_semi` with `extra_semi` children
+==================================================
+
+fn n() {
+    var x = 0;
+};;;
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (number
+            (number_int)))))
+    (block_trailing_semi
+      (extra_semi)
+      (extra_semi))))
