@@ -3,7 +3,7 @@
 ;────────────────────────────
 [
   "type" "enum" "extends" "fn" "var" "return" "throw"
-  "break" "continue" "if" "else" "for" "in" "while"
+  "break" "continue" "breakpoint" "if" "else" "for" "in" "while"
   "do" "try" "catch" "at" "as" "is" "sampling" "limit"
   "skip" "typeof" "abstract" "native" "private" "static"
 ] @keyword
@@ -106,6 +106,7 @@
 (throw_stmt "throw" @keyword.control)
 (break_stmt "break" @keyword.control)
 (continue_stmt "continue" @keyword.control)
+(breakpoint_stmt "breakpoint" @keyword.control)
 
 ;────────────────────────────
 ; Object / struct / enum body

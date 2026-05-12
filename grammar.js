@@ -159,6 +159,7 @@ module.exports = grammar({
         $.throw_stmt,
         $.continue_stmt,
         $.break_stmt,
+        $.breakpoint_stmt,
         $.try_stmt,
         $.at_stmt,
         $.while_stmt,
@@ -186,6 +187,12 @@ module.exports = grammar({
     break_stmt: ($) => seq("break", $._semi),
 
     continue_stmt: ($) => seq("continue", $._semi),
+
+    // `breakpoint;` pauses the GreyCat worker for debugging. Not a
+    // control-flow terminator — execution resumes from the next stmt
+    // after the debugger detaches — and not loop-scoped (valid anywhere
+    // a statement is). Shape mirrors break/continue.
+    breakpoint_stmt: ($) => seq("breakpoint", $._semi),
 
     expr_stmt: ($) => seq($._expr, $._semi),
 

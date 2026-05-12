@@ -1,0 +1,98 @@
+==================================================
+breakpoint_stmt standalone
+==================================================
+
+fn main() {
+    breakpoint;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (breakpoint_stmt))))
+
+==================================================
+breakpoint_stmt is not a control-flow terminator
+==================================================
+
+fn f(): int {
+    breakpoint;
+    return 0;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    return_type: (type_ident
+      name: (ident))
+    body: (block
+      (breakpoint_stmt)
+      (return_stmt
+        (number
+          (number_int))))))
+
+==================================================
+breakpoint_stmt inside loop body alongside break / continue
+==================================================
+
+fn g() {
+    var i = 0;
+    while (i < 3) {
+        if (i == 1) {
+            breakpoint;
+            continue;
+        }
+        if (i == 2) {
+            break;
+        }
+        i = i + 1;
+    }
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (number
+            (number_int))))
+      (while_stmt
+        condition: (binary_expr
+          left: (ident)
+          right: (number
+            (number_int)))
+        block: (block
+          (if_stmt
+            condition: (binary_expr
+              left: (ident)
+              right: (number
+                (number_int)))
+            then_branch: (block
+              (breakpoint_stmt)
+              (continue_stmt)))
+          (if_stmt
+            condition: (binary_expr
+              left: (ident)
+              right: (number
+                (number_int)))
+            then_branch: (block
+              (break_stmt)))
+          (expr_stmt
+            (binary_expr
+              left: (ident)
+              right: (binary_expr
+                left: (ident)
+                right: (number
+                  (number_int))))))))))

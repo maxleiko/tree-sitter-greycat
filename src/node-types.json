@@ -788,6 +788,10 @@
           "named": true
         },
         {
+          "type": "breakpoint_stmt",
+          "named": true
+        },
+        {
           "type": "continue_stmt",
           "named": true
         },
@@ -851,6 +855,21 @@
   },
   {
     "type": "break_stmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "extra_semi",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "breakpoint_stmt",
     "named": true,
     "fields": {},
     "children": {
@@ -5037,6 +5056,10 @@
   },
   {
     "type": "break",
+    "named": false
+  },
+  {
+    "type": "breakpoint",
     "named": false
   },
   {
