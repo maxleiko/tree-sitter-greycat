@@ -73,6 +73,16 @@
 (this) @variable.builtin
 
 ;────────────────────────────
+; Language constants
+;────────────────────────────
+(null) @constant.builtin
+(true) @constant.builtin
+(false) @constant.builtin
+; Runtime value-position globals — no `.gcl` decl, parse as plain idents.
+((ident) @constant.builtin
+ (#any-of? @constant.builtin "NaN" "Infinity"))
+
+;────────────────────────────
 ; Operators
 ;────────────────────────────
 [
