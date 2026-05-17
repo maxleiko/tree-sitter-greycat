@@ -2721,12 +2721,20 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "ident"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "ident"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "string"
+                    }
+                  ]
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "string"
+                  "type": "BLANK"
                 }
               ]
             }
@@ -2779,12 +2787,20 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "ident"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "ident"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "string"
+                    }
+                  ]
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "string"
+                  "type": "BLANK"
                 }
               ]
             }

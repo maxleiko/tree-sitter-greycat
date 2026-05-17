@@ -237,7 +237,7 @@
     "fields": {
       "property": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "ident",
@@ -2732,7 +2732,7 @@
     "fields": {
       "property": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "ident",

@@ -1,0 +1,101 @@
+================================================================================
+Member expr without property (editor-permissive)
+================================================================================
+
+fn f(s: String) {
+    s.
+
+    if (true) {}
+}
+
+--------------------------------------------------------------------------------
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params
+      param: (fn_param
+        name: (ident)
+        type: (type_ident
+          name: (ident))))
+    body: (block
+      (expr_stmt
+        (member_expr (ident)))
+      (if_stmt
+        condition: (true)
+        then_branch: (block)))))
+
+================================================================================
+Arrow expr without property (editor-permissive)
+================================================================================
+
+fn f(s: node) {
+    s->
+
+    if (true) {}
+}
+
+--------------------------------------------------------------------------------
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params
+      param: (fn_param
+        name: (ident)
+        type: (type_ident
+          name: (ident))))
+    body: (block
+      (expr_stmt
+        (arrow_expr (ident)))
+      (if_stmt
+        condition: (true)
+        then_branch: (block)))))
+
+================================================================================
+Member expr with ident property still parses
+================================================================================
+
+fn f(s: String) {
+    s.length;
+}
+
+--------------------------------------------------------------------------------
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params
+      param: (fn_param
+        name: (ident)
+        type: (type_ident
+          name: (ident))))
+    body: (block
+      (expr_stmt
+        (member_expr
+          (ident)
+          property: (ident))))))
+
+================================================================================
+Arrow expr with ident property still parses
+================================================================================
+
+fn f(s: node) {
+    s->name;
+}
+
+--------------------------------------------------------------------------------
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params
+      param: (fn_param
+        name: (ident)
+        type: (type_ident
+          name: (ident))))
+    body: (block
+      (expr_stmt
+        (arrow_expr
+          (ident)
+          property: (ident))))))

@@ -401,7 +401,11 @@ module.exports = grammar({
           $._expr,
           optional($.optional),
           ".",
-          field("property", choice($.ident, $.string)),
+          // Lax parser, strict analyzer: same shape as `static_expr`.
+          // `s.` mid-typing parses as a well-formed member_expr with
+          // no property instead of ERROR-swallowing the following
+          // statement. The analyzer emits `missing-member-property`.
+          field("property", optional(choice($.ident, $.string))),
           optional($.optional),
         ),
       ),
@@ -412,7 +416,9 @@ module.exports = grammar({
           $._expr,
           optional($.optional),
           "->",
-          field("property", choice($.ident, $.string)),
+          // Same lax-parser rationale as `member_expr` /
+          // `static_expr`. `s->` parses cleanly; the analyzer flags it.
+          field("property", optional(choice($.ident, $.string))),
           optional($.optional),
         ),
       ),
