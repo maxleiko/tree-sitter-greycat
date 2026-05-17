@@ -1,0 +1,102 @@
+==================================================
+block_comment between top-level decls
+==================================================
+
+type A {
+    a: int;
+}
+
+/* mid-module note */
+
+type B {
+    b: int;
+}
+
+---
+
+(module
+  (type_decl
+    name: (ident)
+    body: (type_body
+      (type_attr
+        name: (ident)
+        type: (attr_type
+          (type_ident
+            name: (ident))))))
+  (block_comment)
+  (type_decl
+    name: (ident)
+    body: (type_body
+      (type_attr
+        name: (ident)
+        type: (attr_type
+          (type_ident
+            name: (ident)))))))
+
+==================================================
+block_comment inline in fn param
+==================================================
+
+fn f(a: /* foo */ String) {}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params
+      param: (fn_param
+        name: (ident)
+        (block_comment)
+        type: (type_ident
+          name: (ident))))
+    body: (block)))
+
+==================================================
+block_comment inline in var decl
+==================================================
+
+fn f() {
+    var /* w */ x: int = /* y */ 42;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        (block_comment)
+        name: (ident)
+        (type_decorator
+          type: (type_ident
+            name: (ident)))
+        (initializer
+          (block_comment)
+          expr: (number
+            (number_int)))))))
+
+==================================================
+block_comment inline in binary_expr
+==================================================
+
+fn f() {
+    var x = a + /* mid */ b;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (binary_expr
+            left: (ident)
+            (block_comment)
+            right: (ident)))))))

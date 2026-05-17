@@ -15,7 +15,7 @@ module.exports = grammar({
 
   word: ($) => $.ident,
 
-  extras: ($) => [/\s/, $.line_comment, $._block_comment],
+  extras: ($) => [/\s/, $.line_comment, $.block_comment],
 
   conflicts: ($) => [
     [$.type_ident],
@@ -606,7 +606,7 @@ module.exports = grammar({
     doc: ($) => repeat1($.doc_comment),
     doc_comment: (_) => token(seq("///", /.*/)),
     line_comment: (_) => token(seq("//", /.*/)),
-    _block_comment: (_) => token(seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
+    block_comment: (_) => token(seq("/*", /[^*]*\*+([^/*][^*]*\*+)*/, "/")),
   },
 });
 

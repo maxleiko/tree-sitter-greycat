@@ -4091,7 +4091,7 @@
         ]
       }
     },
-    "_block_comment": {
+    "block_comment": {
       "type": "TOKEN",
       "content": {
         "type": "SEQ",
@@ -4123,7 +4123,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_block_comment"
+      "name": "block_comment"
     }
   ],
   "conflicts": [
