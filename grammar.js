@@ -11,7 +11,7 @@ module.exports = grammar({
   name: "greycat",
 
   // see src/scanner.c for those
-  externals: ($) => [$._string_fragment, $.number_suffix],
+  externals: ($) => [$._string_fragment, $.number_suffix, $._automatic_semicolon],
 
   word: ($) => $.ident,
 
@@ -65,8 +65,7 @@ module.exports = grammar({
         field("type", optional($.attr_type)),
         field("init", optional($.attr_init)),
         // Trailing semicolon is optional so a final attr without `;`
-        // before the closing `}` parses cleanly. Drains the last
-        // entry from `KNOWN_GRAMMAR_GAPS` (P7.1).
+        // before the closing `}` parses cleanly.
         optional($._semi),
       ),
     attr_type: ($) => seq(":", $.type_ident),
@@ -136,7 +135,7 @@ module.exports = grammar({
         field("name", $.ident),
         ":",
         field("type", $.type_ident),
-        $._semi,
+        choice($._semi, $._automatic_semicolon),
       ),
 
     type_decorator: ($) => seq(":", field("type", $.type_ident)),
@@ -172,29 +171,43 @@ module.exports = grammar({
     var_decl: ($) =>
       seq(
         "var",
-        field("name", $.ident),
+        // Lax parser, strict analyzer: `name` is `optional` so a
+        // mid-edit `var` / `var ` (no ident typed yet) parses as a
+        // valid (if semantically incomplete) `var_decl` instead of
+        // recovery-swallowing the next-line ident as the name. The
+        // analyzer emits a "missing name" diagnostic. Without this,
+        // tree-sitter's incremental reparse builds on top of the
+        // bad swallow subtree from the `var` intermediate and the
+        // staleness persists into the user's final state — visible
+        // in Zed / nvim-treesitter / playground.
+        optional(field("name", $.ident)),
         optional($.type_decorator),
         optional($.initializer),
-        $._semi,
+        // Accept either `;` or an automatic-semicolon emitted by
+        // the external scanner at newline / `}` / EOF.
+        choice($._semi, $._automatic_semicolon),
       ),
 
     initializer: ($) => seq("=", field("expr", $._expr)),
 
-    return_stmt: ($) => seq("return", optional($._expr), $._semi),
+    return_stmt: ($) => seq("return", optional($._expr), choice($._semi, $._automatic_semicolon)),
 
-    throw_stmt: ($) => seq("throw", $._expr, $._semi),
+    throw_stmt: ($) => seq("throw", $._expr, choice($._semi, $._automatic_semicolon)),
 
-    break_stmt: ($) => seq("break", $._semi),
+    break_stmt: ($) => seq("break", choice($._semi, $._automatic_semicolon)),
 
-    continue_stmt: ($) => seq("continue", $._semi),
+    continue_stmt: ($) => seq("continue", choice($._semi, $._automatic_semicolon)),
 
     // `breakpoint;` pauses the GreyCat worker for debugging. Not a
     // control-flow terminator — execution resumes from the next stmt
     // after the debugger detaches — and not loop-scoped (valid anywhere
     // a statement is). Shape mirrors break/continue.
-    breakpoint_stmt: ($) => seq("breakpoint", $._semi),
+    breakpoint_stmt: ($) => seq("breakpoint", choice($._semi, $._automatic_semicolon)),
 
-    expr_stmt: ($) => seq($._expr, $._semi),
+    expr_stmt: ($) => seq(
+      $._expr,
+      choice($._semi, $._automatic_semicolon)
+    ),
 
     try_stmt: ($) =>
       seq(
@@ -215,7 +228,7 @@ module.exports = grammar({
     while_stmt: ($) => seq("while", "(", field("condition", $._expr), ")", field("block", $.block)),
 
     do_while_stmt: ($) =>
-      seq("do", field("block", $.block), "while", "(", field("condition", $._expr), ")", $._semi),
+      seq("do", field("block", $.block), "while", "(", field("condition", $._expr), ")", choice($._semi, $._automatic_semicolon)),
 
     if_stmt: ($) =>
       seq(

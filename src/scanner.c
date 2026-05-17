@@ -7,6 +7,7 @@
 enum TokenType {
     STRING_FRAGMENT,
     NUMBER_SUFFIX,
+    AUTOMATIC_SEMICOLON,
 };
 
 void *tree_sitter_greycat_external_scanner_create() { return NULL; }
@@ -20,6 +21,87 @@ unsigned tree_sitter_greycat_external_scanner_serialize(UNUSED void *p, UNUSED c
 void tree_sitter_greycat_external_scanner_deserialize(UNUSED void *p, UNUSED const char *b, UNUSED unsigned n) {}
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
+static void skip(TSLexer *lexer) { lexer->advance(lexer, true); }
+
+// POC for experiment (c): walk forward across horizontal whitespace
+// looking for a real line break / `}` / EOF. If found, emit a
+// zero-width `AUTOMATIC_SEMICOLON` token. Only invoked when the
+// parser is in a state where the current statement is grammatically
+// closable (`_semi` is in `valid_symbols`), so it cannot fire
+// mid-expression where `;` would itself be invalid.
+//
+// Pattern mirrors tree-sitter-javascript / tree-sitter-go: scanner
+// runs BEFORE the standard extras pass, so `lexer->lookahead` is the
+// raw next char. `skip()` advances the position without contributing
+// to the emitted token's text — ASI nodes are zero-width in the CST.
+//
+// Continuation suppression: after spotting a newline, the scanner
+// peeks at the next non-whitespace char. If it's an operator that
+// continues the prior expression (`.`, `?`, `[`, `(`, `+`, `-`, `*`,
+// `/`, `%`, `^`, `<`, `>`, `=`, `!`, `&`, `|`), ASI is NOT emitted —
+// the user line-broke mid-chain (e.g. `var x = obj\n  .method()`).
+// Letters/digits/`{` start a new stmt, so ASI fires. The `}` and EOF
+// cases short-circuit without continuation suppression (you can't
+// continue an expression past a brace or EOF).
+//
+// Known limitation: line-breaks BEFORE keyword binary operators
+// (`as`, `is`) will incorrectly trigger ASI because they look like
+// new-stmt starts. Mitigation is same-line usage or explicit `;`.
+static bool is_continuation_char(int32_t c) {
+    switch (c) {
+        case '.':
+        case '?':
+        case '[':
+        case '(':
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '%':
+        case '^':
+        case '<':
+        case '>':
+        case '=':
+        case '!':
+        case '&':
+        case '|':
+        case ',':
+            return true;
+        default:
+            return false;
+    }
+}
+
+static bool scan_automatic_semicolon(TSLexer *lexer) {
+    lexer->result_symbol = AUTOMATIC_SEMICOLON;
+    bool saw_newline = false;
+    for (;;) {
+        switch (lexer->lookahead) {
+            case ' ':
+            case '\t':
+            case '\r':
+                skip(lexer);
+                break;
+            case '\n':
+                skip(lexer);
+                saw_newline = true;
+                break;
+            default:
+                if (!saw_newline) {
+                    return false;
+                }
+                if (lexer->lookahead == '\0' || lexer->lookahead == '}') {
+                    lexer->mark_end(lexer);
+                    return true;
+                }
+                if (is_continuation_char(lexer->lookahead)) {
+                    return false;
+                }
+                lexer->mark_end(lexer);
+                return true;
+        }
+    }
+}
 
 static bool scan_string_fragment(TSLexer *lexer) {
     lexer->result_symbol = STRING_FRAGMENT;
@@ -81,7 +163,14 @@ bool tree_sitter_greycat_external_scanner_scan(UNUSED void *payload, TSLexer *le
         }
     }
     if (valid_symbols[STRING_FRAGMENT]) {
-        return scan_string_fragment(lexer);
+        if (scan_string_fragment(lexer)) {
+            return true;
+        }
+    }
+    if (valid_symbols[AUTOMATIC_SEMICOLON]) {
+        if (scan_automatic_semicolon(lexer)) {
+            return true;
+        }
     }
 
     return false;

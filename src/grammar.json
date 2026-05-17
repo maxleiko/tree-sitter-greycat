@@ -929,8 +929,17 @@
           }
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1201,12 +1210,20 @@
           "value": "var"
         },
         {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "SYMBOL",
-            "name": "ident"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "ident"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "CHOICE",
@@ -1233,8 +1250,17 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1275,8 +1301,17 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1292,8 +1327,17 @@
           "name": "_expr"
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1305,8 +1349,17 @@
           "value": "break"
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1318,8 +1371,17 @@
           "value": "continue"
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1331,8 +1393,17 @@
           "value": "breakpoint"
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1344,8 +1415,17 @@
           "name": "_expr"
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -1517,8 +1597,17 @@
           "value": ")"
         },
         {
-          "type": "SYMBOL",
-          "name": "_semi"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_semi"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_automatic_semicolon"
+            }
+          ]
         }
       ]
     },
@@ -4058,6 +4147,10 @@
     {
       "type": "SYMBOL",
       "name": "number_suffix"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_automatic_semicolon"
     }
   ],
   "inline": [],
