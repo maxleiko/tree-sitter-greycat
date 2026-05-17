@@ -57,6 +57,9 @@
   fn: (member_expr
         property: (ident) @function.method.call))
 (call_expr
+  fn: (arrow_expr
+        property: (ident) @function.method.call))
+(call_expr
   fn: (static_expr
         property: (ident) @function.static.call))
 
