@@ -12,6 +12,7 @@
 ; Comments and documentation
 ;────────────────────────────
 (line_comment) @comment
+(block_comment) @comment
 (doc_comment) @comment.documentation
 
 ;────────────────────────────
@@ -66,8 +67,20 @@
 ;────────────────────────────
 ; Literals
 ;────────────────────────────
-(number) @number
-(number_suffix) @namespace
+(number_int) @number
+(number_decimal) @number.float
+(number_scientific) @number.float
+
+; Suffixed literals: color the value parts as numbers and the suffix distinctly
+(number_suffixed
+  (number_int) @number)
+(number_suffixed
+  (number_decimal) @number.float)
+(number_suffixed
+  (number_scientific) @number.float)
+(number_suffixed
+  (number_suffix) @number.special)
+
 (char) @character
 (string) @string
 (string_fragment) @string
