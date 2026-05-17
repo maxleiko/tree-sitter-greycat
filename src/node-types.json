@@ -3856,7 +3856,7 @@
     "fields": {
       "property": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "ident",

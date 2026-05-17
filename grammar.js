@@ -422,7 +422,7 @@ module.exports = grammar({
         seq(
           choice($.static_expr, $.type_ident),
           "::",
-          field("property", choice($.ident, $.string)),
+          field("property", optional(choice($.ident, $.string))),
         ),
       ),
 

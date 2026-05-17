@@ -1,0 +1,95 @@
+==================================================
+Static expr without property (editor-permissive)
+==================================================
+
+fn x() {
+    var _ = Constants::;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (static_expr
+            (type_ident
+              name: (ident))))))))
+
+==================================================
+Static expr without property at end of line
+==================================================
+
+fn x() {
+    var _ = Constants::
+
+    if (true) {}
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (static_expr
+            (type_ident
+              name: (ident)))))
+      (if_stmt
+        condition: (true)
+        then_branch: (block)))))
+
+==================================================
+Static expr with ident property still parses
+==================================================
+
+fn x() {
+    var _ = Constants::pi;
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (static_expr
+            (type_ident
+              name: (ident))
+            property: (ident)))))))
+
+==================================================
+Static expr with string property still parses
+==================================================
+
+fn x() {
+    var _ = Tz::"Europe/Paris";
+}
+
+---
+
+(module
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block
+      (var_decl
+        name: (ident)
+        (initializer
+          expr: (static_expr
+            (type_ident
+              name: (ident))
+            property: (string
+              (string_fragment))))))))
