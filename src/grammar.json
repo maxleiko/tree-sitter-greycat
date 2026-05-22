@@ -27,6 +27,10 @@
           {
             "type": "SYMBOL",
             "name": "mod_pragma"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "expr_stmt"
           }
         ]
       }

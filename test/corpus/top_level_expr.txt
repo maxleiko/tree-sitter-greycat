@@ -1,0 +1,84 @@
+==================================================
+Bare expression at module scope parses as `expr_stmt`
+==================================================
+
+foo();
+
+---
+
+(module
+  (expr_stmt
+    (call_expr
+      fn: (ident)
+      (args))))
+
+==================================================
+Bare expression with no trailing `;` parses (auto-semi)
+==================================================
+
+foo()
+
+---
+
+(module
+  (expr_stmt
+    (call_expr
+      fn: (ident)
+      (args))))
+
+==================================================
+Top-level expression doesn't ERROR-recover the following decl
+==================================================
+
+foo();
+fn next() {}
+
+---
+
+(module
+  (expr_stmt
+    (call_expr
+      fn: (ident)
+      (args)))
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block)))
+
+==================================================
+Multi-line top-level expression
+==================================================
+
+1 + 2;
+"hello";
+
+---
+
+(module
+  (expr_stmt
+    (binary_expr
+      left: (number
+        (number_int))
+      right: (number
+        (number_int))))
+  (expr_stmt
+    (string
+      (string_fragment))))
+
+==================================================
+Top-level expression after a real decl still parses
+==================================================
+
+type T {}
+foo();
+
+---
+
+(module
+  (type_decl
+    name: (ident)
+    body: (type_body))
+  (expr_stmt
+    (call_expr
+      fn: (ident)
+      (args))))

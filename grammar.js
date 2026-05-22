@@ -29,7 +29,14 @@ module.exports = grammar({
   ],
 
   rules: {
-    module: ($) => repeat(choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma)),
+    // Permissive top level: `expr_stmt` is accepted so doc snippets
+    // (triple-backtick `gcl` blocks that contain only an expression)
+    // pretty-print under the same syntax highlighter as real modules.
+    // Semantically invalid as a project module — the analyzer's
+    // `top-level-expr` parse-diag rejects the whole stmt and the HIR
+    // lowering silently drops it (no `Decl` is emitted).
+    module: ($) =>
+      repeat(choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma, $.expr_stmt)),
 
     mod_pragma: ($) => seq(optional($.doc), $.annotation, $._semi),
 
