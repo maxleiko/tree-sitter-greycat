@@ -29,14 +29,37 @@ module.exports = grammar({
   ],
 
   rules: {
-    // Permissive top level: `expr_stmt` is accepted so doc snippets
-    // (triple-backtick `gcl` blocks that contain only an expression)
-    // pretty-print under the same syntax highlighter as real modules.
-    // Semantically invalid as a project module — the analyzer's
-    // `top-level-expr` parse-diag rejects the whole stmt and the HIR
-    // lowering silently drops it (no `Decl` is emitted).
+    // Permissive top level: a `mod_stmt` wrapper accepts most block
+    // statements at module scope so doc snippets (triple-backtick `gcl`
+    // blocks that contain only an expression, a loop, an if, etc.)
+    // pretty-print under the same tree-sitter highlighter as real
+    // modules. Semantically invalid as a project module — the
+    // analyzer's `top-level-stmt` parse-diag rejects the whole stmt
+    // and the HIR lowering silently drops it (no `Decl` is emitted).
     module: ($) =>
-      repeat(choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma, $.expr_stmt)),
+      repeat(choice($.modvar, $.fn_decl, $.type_decl, $.enum_decl, $.mod_pragma, $.mod_stmt)),
+
+    // Block-style statements allowed at module scope. Deliberately
+    // excludes `var_decl` — bare `var x = 1;` at module scope is
+    // already covered by `modvar` (which is a permissive
+    // var_decl-with-frontmatter), and adding `var_decl` here would
+    // create an unresolvable parse ambiguity.
+    mod_stmt: ($) =>
+      choice(
+        $.expr_stmt,
+        $.if_stmt,
+        $.while_stmt,
+        $.do_while_stmt,
+        $.for_stmt,
+        $.for_in_stmt,
+        $.try_stmt,
+        $.at_stmt,
+        $.return_stmt,
+        $.throw_stmt,
+        $.break_stmt,
+        $.continue_stmt,
+        $.breakpoint_stmt,
+      ),
 
     mod_pragma: ($) => seq(optional($.doc), $.annotation, $._semi),
 

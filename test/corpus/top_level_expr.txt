@@ -1,5 +1,5 @@
 ==================================================
-Bare expression at module scope parses as `expr_stmt`
+Bare expression at module scope parses as `mod_stmt > expr_stmt`
 ==================================================
 
 foo();
@@ -7,10 +7,11 @@ foo();
 ---
 
 (module
-  (expr_stmt
-    (call_expr
-      fn: (ident)
-      (args))))
+  (mod_stmt
+    (expr_stmt
+      (call_expr
+        fn: (ident)
+        (args)))))
 
 ==================================================
 Bare expression with no trailing `;` parses (auto-semi)
@@ -21,10 +22,11 @@ foo()
 ---
 
 (module
-  (expr_stmt
-    (call_expr
-      fn: (ident)
-      (args))))
+  (mod_stmt
+    (expr_stmt
+      (call_expr
+        fn: (ident)
+        (args)))))
 
 ==================================================
 Top-level expression doesn't ERROR-recover the following decl
@@ -36,10 +38,11 @@ fn next() {}
 ---
 
 (module
-  (expr_stmt
-    (call_expr
-      fn: (ident)
-      (args)))
+  (mod_stmt
+    (expr_stmt
+      (call_expr
+        fn: (ident)
+        (args))))
   (fn_decl
     name: (ident)
     params: (fn_params)
@@ -55,15 +58,17 @@ Multi-line top-level expression
 ---
 
 (module
-  (expr_stmt
-    (binary_expr
-      left: (number
-        (number_int))
-      right: (number
-        (number_int))))
-  (expr_stmt
-    (string
-      (string_fragment))))
+  (mod_stmt
+    (expr_stmt
+      (binary_expr
+        left: (number
+          (number_int))
+        right: (number
+          (number_int)))))
+  (mod_stmt
+    (expr_stmt
+      (string
+        (string_fragment)))))
 
 ==================================================
 Top-level expression after a real decl still parses
@@ -78,7 +83,56 @@ foo();
   (type_decl
     name: (ident)
     body: (type_body))
-  (expr_stmt
-    (call_expr
-      fn: (ident)
-      (args))))
+  (mod_stmt
+    (expr_stmt
+      (call_expr
+        fn: (ident)
+        (args)))))
+
+==================================================
+Top-level `if` statement parses via mod_stmt
+==================================================
+
+if (cond) { foo(); }
+
+---
+
+(module
+  (mod_stmt
+    (if_stmt
+      condition: (ident)
+      then_branch: (block
+        (expr_stmt
+          (call_expr
+            fn: (ident)
+            (args)))))))
+
+==================================================
+Top-level `while` loop parses via mod_stmt
+==================================================
+
+while (cond) { foo(); }
+
+---
+
+(module
+  (mod_stmt
+    (while_stmt
+      condition: (ident)
+      block: (block
+        (expr_stmt
+          (call_expr
+            fn: (ident)
+            (args)))))))
+
+==================================================
+Top-level `return` parses via mod_stmt
+==================================================
+
+return;
+
+---
+
+(module
+  (mod_stmt
+    (return_stmt)))

@@ -30,10 +30,67 @@
           },
           {
             "type": "SYMBOL",
-            "name": "expr_stmt"
+            "name": "mod_stmt"
           }
         ]
       }
+    },
+    "mod_stmt": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "expr_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "if_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "while_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "do_while_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "for_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "for_in_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "try_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "at_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "return_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "throw_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "break_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "continue_stmt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "breakpoint_stmt"
+        }
+      ]
     },
     "mod_pragma": {
       "type": "SEQ",

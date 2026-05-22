@@ -2872,6 +2872,69 @@
     }
   },
   {
+    "type": "mod_stmt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "at_stmt",
+          "named": true
+        },
+        {
+          "type": "break_stmt",
+          "named": true
+        },
+        {
+          "type": "breakpoint_stmt",
+          "named": true
+        },
+        {
+          "type": "continue_stmt",
+          "named": true
+        },
+        {
+          "type": "do_while_stmt",
+          "named": true
+        },
+        {
+          "type": "expr_stmt",
+          "named": true
+        },
+        {
+          "type": "for_in_stmt",
+          "named": true
+        },
+        {
+          "type": "for_stmt",
+          "named": true
+        },
+        {
+          "type": "if_stmt",
+          "named": true
+        },
+        {
+          "type": "return_stmt",
+          "named": true
+        },
+        {
+          "type": "throw_stmt",
+          "named": true
+        },
+        {
+          "type": "try_stmt",
+          "named": true
+        },
+        {
+          "type": "while_stmt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "modifiers",
     "named": true,
     "fields": {}
@@ -2890,15 +2953,15 @@
           "named": true
         },
         {
-          "type": "expr_stmt",
-          "named": true
-        },
-        {
           "type": "fn_decl",
           "named": true
         },
         {
           "type": "mod_pragma",
+          "named": true
+        },
+        {
+          "type": "mod_stmt",
           "named": true
         },
         {
