@@ -53,3 +53,56 @@ fn next() {}
     name: (ident)
     params: (fn_params)
     body: (block)))
+
+==================================================
+modvar with no name parses (mid-edit `var ;`, flagged downstream)
+==================================================
+
+var;
+fn next() {}
+
+---
+
+(module
+  (modvar)
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block)))
+
+==================================================
+modvar with name but no type_decorator parses (semantically invalid, flagged downstream)
+==================================================
+
+var x;
+fn next() {}
+
+---
+
+(module
+  (modvar
+    name: (ident))
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block)))
+
+==================================================
+modvar with name + initializer but no type_decorator parses
+==================================================
+
+var x = 1;
+fn next() {}
+
+---
+
+(module
+  (modvar
+    name: (ident)
+    (initializer
+      expr: (number
+        (number_int))))
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block)))

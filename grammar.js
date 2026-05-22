@@ -140,11 +140,17 @@ module.exports = grammar({
         optional($.annotations),
         field("modifiers", optional($.modifiers)),
         "var",
-        field("name", $.ident),
-        $.type_decorator,
-        optional($.initializer), // ACCEPTED by the grammar to be nice, but semantically invalid
-        // Accept either `;` or an automatic-semicolon emitted by
-        // the external scanner at newline / `}` / EOF.
+        // Permissive shape: a `modvar` is syntactically a `var_decl`
+        // with frontmatter (doc / annotations / modifiers). Mid-edit
+        // `var\n` or `var x\n` parses cleanly instead of opening an
+        // (ERROR) recovery span. Semantic rules (MUST have name, MUST
+        // have type_decorator, MUST NOT have initializer, type MUST be
+        // a node-tag) are enforced downstream: `missing-var-name` /
+        // `missing-modvar-type` / `modvar-initializer` parse-diags +
+        // the `modvar-shape` lint family.
+        optional(field("name", $.ident)),
+        optional($.type_decorator),
+        optional($.initializer),
         choice($._semi, $._automatic_semicolon),
       ),
 
