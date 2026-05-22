@@ -432,7 +432,13 @@ module.exports = grammar({
         seq(field("fn", choice($.ident, $.member_expr, $.arrow_expr, $.static_expr)), $.args),
       ),
 
-    lambda_expr: ($) => seq("fn", field("params", $.fn_params), field("body", $.block)),
+    lambda_expr: ($) =>
+      seq(
+        "fn",
+        field("params", $.fn_params),
+        optional(seq(":", field("return_type", $.type_ident))),
+        field("body", $.block),
+      ),
 
     offset_expr: ($) =>
       prec.right(

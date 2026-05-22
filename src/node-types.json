@@ -2727,6 +2727,16 @@
             "named": true
           }
         ]
+      },
+      "return_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type_ident",
+            "named": true
+          }
+        ]
       }
     }
   },
