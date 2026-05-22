@@ -1,0 +1,55 @@
+==================================================
+modvar with bare type — canonical shape
+==================================================
+
+var x: int;
+
+---
+
+(module
+  (modvar
+    name: (ident)
+    (type_decorator
+      type: (type_ident
+        name: (ident)))))
+
+==================================================
+modvar with initializer parses (semantically invalid, flagged downstream)
+==================================================
+
+var x: int = 42;
+
+---
+
+(module
+  (modvar
+    name: (ident)
+    (type_decorator
+      type: (type_ident
+        name: (ident)))
+    (initializer
+      expr: (number
+        (number_int)))))
+
+==================================================
+modvar with initializer doesn't ERROR-recover the next decl
+==================================================
+
+var x: int = 1;
+fn next() {}
+
+---
+
+(module
+  (modvar
+    name: (ident)
+    (type_decorator
+      type: (type_ident
+        name: (ident)))
+    (initializer
+      expr: (number
+        (number_int))))
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block)))

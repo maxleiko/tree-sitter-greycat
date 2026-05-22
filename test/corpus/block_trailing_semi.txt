@@ -114,3 +114,81 @@ fn n() {
     (block_trailing_semi
       (extra_semi)
       (extra_semi))))
+
+==================================================
+type_decl body followed by `;` parses as `block_trailing_semi`
+==================================================
+
+type T {
+    name: String;
+};
+
+---
+
+(module
+  (type_decl
+    name: (ident)
+    body: (type_body
+      (type_attr
+        name: (ident)
+        type: (attr_type
+          (type_ident
+            name: (ident)))))
+    (block_trailing_semi)))
+
+==================================================
+enum_decl body followed by `;` parses as `block_trailing_semi`
+==================================================
+
+enum E {
+    a, b
+};
+
+---
+
+(module
+  (enum_decl
+    name: (ident)
+    body: (enum_body
+      (enum_field
+        (ident))
+      (enum_field
+        (ident)))
+    (block_trailing_semi)))
+
+==================================================
+type_decl with multiple trailing `;` collapse into one `block_trailing_semi`
+==================================================
+
+type T { };;;
+
+---
+
+(module
+  (type_decl
+    name: (ident)
+    body: (type_body)
+    (block_trailing_semi
+      (extra_semi)
+      (extra_semi))))
+
+==================================================
+enum_decl trailing `;` doesn't ERROR-recover the next decl
+==================================================
+
+enum E { a };
+fn next() {}
+
+---
+
+(module
+  (enum_decl
+    name: (ident)
+    body: (enum_body
+      (enum_field
+        (ident)))
+    (block_trailing_semi))
+  (fn_decl
+    name: (ident)
+    params: (fn_params)
+    body: (block)))

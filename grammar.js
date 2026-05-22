@@ -51,6 +51,11 @@ module.exports = grammar({
         // `type_ident` here.
         optional(seq("extends", field("supertype", $.type_ident))),
         field("body", $.type_body),
+        // Same permissive trailing-`;` shape as `fn_decl` /
+        // `type_method`: a stray `};` after a type body parses cleanly
+        // instead of opening an `(ERROR)` recovery span that swallows
+        // the next top-level decl. Flagged by `redundant-semicolon`.
+        optional($.block_trailing_semi),
       ),
 
     type_params: ($) => seq("<", sepBy1(",", $.ident), ">"),
@@ -102,6 +107,9 @@ module.exports = grammar({
         "enum",
         field("name", $.ident),
         field("body", $.enum_body),
+        // See `type_decl` — same permissive `block_trailing_semi`
+        // shape so `enum E { ... };` doesn't ERROR-recover.
+        optional($.block_trailing_semi),
       ),
 
     enum_body: ($) => seq("{", sepBy(choice($._semi, ","), $.enum_field), "}"),
@@ -133,8 +141,10 @@ module.exports = grammar({
         field("modifiers", optional($.modifiers)),
         "var",
         field("name", $.ident),
-        ":",
-        field("type", $.type_ident),
+        $.type_decorator,
+        optional($.initializer), // ACCEPTED by the grammar to be nice, but semantically invalid
+        // Accept either `;` or an automatic-semicolon emitted by
+        // the external scanner at newline / `}` / EOF.
         choice($._semi, $._automatic_semicolon),
       ),
 

@@ -1149,6 +1149,10 @@
           "named": true
         },
         {
+          "type": "block_trailing_semi",
+          "named": true
+        },
+        {
           "type": "doc",
           "named": true
         }
@@ -2927,21 +2931,11 @@
             "named": true
           }
         ]
-      },
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "type_ident",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "annotations",
@@ -2953,6 +2947,14 @@
         },
         {
           "type": "extra_semi",
+          "named": true
+        },
+        {
+          "type": "initializer",
+          "named": true
+        },
+        {
+          "type": "type_decorator",
           "named": true
         }
       ]
@@ -4487,6 +4489,10 @@
       "types": [
         {
           "type": "annotations",
+          "named": true
+        },
+        {
+          "type": "block_trailing_semi",
           "named": true
         },
         {
