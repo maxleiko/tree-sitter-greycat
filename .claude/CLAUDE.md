@@ -3,11 +3,6 @@
 Tree-sitter grammar for the **GreyCat language** (`.gcl`). Produces a parser
 used by editors / LSPs / syntax-highlighters to understand GreyCat source.
 
-If the `greycat` skill (`/greycat:greycat`) is available in this Claude Code
-session, load it before doing language-shaped work — it has the canonical
-GreyCat syntax/semantics reference. The grammar here must match what that
-skill describes (and what `greycat-lang lint` / `greycat-lang fmt` accept).
-
 ## Layout
 
 - [grammar.js](grammar.js) — the source of truth. Edit this, then regenerate.
@@ -43,10 +38,10 @@ If you're unsure whether a construct should parse:
 
 1. Ask the `greycat` skill or check
    `/home/leiko/.claude/plugins/cache/datathings/greycat/*/skills/greycat/`.
-2. Run `greycat-lang lint -p <file>` — if lint accepts a snippet, the
+2. Run `greycat-analyzer lint -p <file>` — if lint accepts a snippet, the
    tree-sitter grammar must accept it too (no `ERROR` nodes). The formatter
    reshaping the code is fine; producing an `ERROR` node is not.
-3. Run `greycat-lang fmt --check <file>` to see how the official formatter
+3. Run `greycat-analyzer fmt --check <file>` to see how the official formatter
    would reshape it (informational — formatter rewrites are not grammar
    errors).
 
