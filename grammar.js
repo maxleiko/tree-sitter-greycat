@@ -322,15 +322,23 @@ module.exports = grammar({
         // already parse as `offset_expr` containing a
         // `range_expr`, so they don't go through this field.
         field("range", optional($.interval_expr)),
-        field("sampling", optional(seq("sampling", $._expr))),
-        field("limit", optional(seq("limit", $._expr))),
-        field("skip", optional(seq("skip", $._expr))),
+        // `sampling` / `limit` / `skip` are DEPRECATED node-collection query
+        // clauses. They are NOT reserved keywords — GreyCat lexes them as plain
+        // identifiers and only the for-in parser treats them specially — so they
+        // parse here as generic `ident expr` clauses, in ANY order and any
+        // combination. Keeping them out of the token set is exactly what lets
+        // `f.skip()`, `var limit`, a `sampling()` method, etc. parse everywhere
+        // else. The analyzer validates the keyword name and flags the deprecated
+        // usage; the grammar is intentionally lax here.
+        repeat($.for_in_clause),
         ")",
         field("block", $.block),
       ),
 
     for_in_param: ($) =>
       seq(field("name", $.ident), optional(seq(":", field("type", $.type_ident)))),
+
+    for_in_clause: ($) => seq(field("keyword", $.ident), field("value", $._expr)),
 
     annotations: ($) => repeat1($.annotation),
 

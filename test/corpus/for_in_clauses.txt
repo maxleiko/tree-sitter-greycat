@@ -1,0 +1,128 @@
+==================================================
+for-in deprecated clauses parse in any order
+==================================================
+
+fn x(c: any) {
+    for (k, v in c skip 2 limit 5 sampling 1s) {}
+}
+
+---
+
+(module
+  (fn_decl
+    (ident)
+    (fn_params
+      (fn_param
+        (ident)
+        (type_ident
+          (ident))))
+    (block
+      (for_in_stmt
+        (for_in_param
+          (ident))
+        (for_in_param
+          (ident))
+        (ident)
+        (for_in_clause
+          (ident)
+          (number
+            (number_int)))
+        (for_in_clause
+          (ident)
+          (number
+            (number_int)))
+        (for_in_clause
+          (ident)
+          (number
+            (number_suffixed
+              (number_int)
+              (number_suffix))))
+        (block)))))
+
+==================================================
+sampling / limit / skip are usable as names everywhere else
+==================================================
+
+type Foo {
+    fn skip() {}
+}
+
+fn x(f: Foo) {
+    var limit = 1;
+    var s = f.sampling();
+    other(f.skip());
+}
+
+---
+
+(module
+  (type_decl
+    (ident)
+    (type_body
+      (type_method
+        (ident)
+        (fn_params)
+        (block))))
+  (fn_decl
+    (ident)
+    (fn_params
+      (fn_param
+        (ident)
+        (type_ident
+          (ident))))
+    (block
+      (var_decl
+        (ident)
+        (initializer
+          (number
+            (number_int))))
+      (var_decl
+        (ident)
+        (initializer
+          (call_expr
+            (member_expr
+              (ident)
+              (ident))
+            (args))))
+      (expr_stmt
+        (call_expr
+          (ident)
+          (args
+            (call_expr
+              (member_expr
+                (ident)
+                (ident))
+              (args))))))))
+
+==================================================
+for-in iterator member access keeps the clause keyword distinct
+==================================================
+
+fn x(c: any) {
+    for (k, v in c.skip limit 5) {}
+}
+
+---
+
+(module
+  (fn_decl
+    (ident)
+    (fn_params
+      (fn_param
+        (ident)
+        (type_ident
+          (ident))))
+    (block
+      (for_in_stmt
+        (for_in_param
+          (ident))
+        (for_in_param
+          (ident))
+        (member_expr
+          (ident)
+          (ident))
+        (for_in_clause
+          (ident)
+          (number
+            (number_int)))
+        (block)))))

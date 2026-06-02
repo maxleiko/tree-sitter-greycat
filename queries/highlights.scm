@@ -4,8 +4,8 @@
 [
   "type" "enum" "extends" "fn" "var" "return" "throw"
   "break" "continue" "breakpoint" "if" "else" "for" "in" "while"
-  "do" "try" "catch" "at" "as" "is" "sampling" "limit"
-  "skip" "typeof" "abstract" "native" "private" "static"
+  "do" "try" "catch" "at" "as" "is" "typeof"
+  "abstract" "native" "private" "static"
 ] @keyword
 
 ;────────────────────────────
@@ -122,6 +122,12 @@
 (for_stmt "for" @keyword.control)
 (for_in_stmt "for" @keyword.control)
 (for_in_stmt "in" @keyword.operator)
+; Deprecated for-in query clauses (`sampling` / `limit` / `skip`). These are
+; plain identifiers in clause position now, so highlight only the recognized
+; keyword names as control keywords.
+((for_in_clause
+  keyword: (ident) @keyword.control)
+ (#any-of? @keyword.control "sampling" "limit" "skip"))
 (while_stmt "while" @keyword.control)
 (do_while_stmt "do" @keyword.control)
 (do_while_stmt "while" @keyword.control)
