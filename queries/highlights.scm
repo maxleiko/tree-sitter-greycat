@@ -81,7 +81,7 @@
 (number_suffixed
   (number_suffix) @number.special)
 
-(char) @character
+(char) @string
 (string) @string
 (string_fragment) @string
 (string_escape_sequence) @string.escape
